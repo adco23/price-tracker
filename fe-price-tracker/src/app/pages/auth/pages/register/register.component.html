@@ -1,0 +1,17 @@
+<div class="w-full flex flex-col items-center gap-7">
+  <img src="images/img-register.jpg" alt="register dog" class="rounded-full w-28 h-28">
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="form">
+    <input type="text" formControlName="username" placeholder="Full name" class="bg-slate-100">
+    <input type="email" formControlName="email" placeholder="E-mail" class="bg-slate-100">
+    <div class="w-full flex items-center justify-end">
+      <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password" placeholder="Password" class="bg-slate-100">
+      <pass-eye class="absolute" (toggle)="onTogglePassword()"/>
+    </div>
+    <div class="w-full flex items-center justify-end">
+      <input [type]="showPasswordMatch ? 'text' : 'password'" id="passMatch" formControlName="passMatch" placeholder="Confirm Password" class="bg-slate-100">
+      <pass-eye class="absolute" (toggle)="onTogglePasswordMatch()"/>
+    </div>
+    <common-btn type="submit" text="Get Started" />
+    <span class="text-slate-400 w-full text-center text-sm -translate-y-5">I agree to <a href="#" class="underline underline-offset-4">terms & conditions</a></span>
+  </form>
+</div>
