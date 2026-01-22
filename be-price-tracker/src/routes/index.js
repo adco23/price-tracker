@@ -5,6 +5,8 @@ const router = express.Router();
 const priceRouter = require('./priceRoute');
 const productRouter = require('./productRoute');
 const placesRouter = require('./placeRoute');
+const brandRouter = require('./brandRoute');
+const unitRouter = require('./unitRoute');
 
 /**
  * @swagger
@@ -29,5 +31,7 @@ router.get('/test', (req, res, next) => {
 router.use('/prices', priceRouter);
 router.use('/products', productRouter);
 router.use('/places', placesRouter);
+router.use('/brands', brandRouter);
+router.use('/units', unitRouter);
 
 module.exports = router;

@@ -1,0 +1,19 @@
+<div class="w-full flex flex-col items-center gap-7">
+  <form class="form flex flex-col gap-4">
+    <input type="text" placeholder="Nombre" class="bg-slate-100">
+    <textarea placeholder="Descripción" class="bg-slate-100"></textarea>
+    <input type="text"placeholder="Marca" class="bg-slate-100">
+    <dropdown>
+      @for (brand of brands$(); track $index) {
+        <button type="button" class="flex justify-start">
+          <span>{{ brand.name }}</span>
+        </button>
+      } @empty {
+        <button type="button" class="flex justify-center items-center gap-2 bg-blue-p-500 rounded-lg text-white font-bold py-4"><i class="lni lni-circle-plus"></i>Agregar</button>
+      }
+    </dropdown>
+    <common-btn type="submit" text="Agregar" />
+  </form>
+</div>
+
+

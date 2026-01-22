@@ -17,29 +17,16 @@ const NotFoundError = require('../errors/NotFoundError');
  */
 router.get('/', async (req, res, next) => {
   try {
-    let all = await db.findMany(/*{
-      include: {
-        prices: {
-          select: {
-            price: true,
-            date: true,
-          },
-        },
-      },
-    }*/);
+    let all = await db.findMany();
 
-    // let formatted = all.map((product) => ({
-    //   ...product,
-    //   prices: product.prices.map((price) => ({
-    //     ...price,
-    //     date: format(price.date, 'YYYY-MM-DD'),
-    //   })),
-    // }));
-
-    res.status(200).json(new ApiResponse(all));
+    res.status(200).json(new ApiResponse({ data: all }));
   } catch (error) {
     next(error);
   }
+});
+
+
+router.post('/', async (req, res, next) => {
 });
 
 /**
@@ -63,18 +50,33 @@ router.get('/product/:productId', async (req, res, next) => {
   try {
     const { productId } = req.params;
 
-    let product = await db.findUnique({
+    const product = await db.findUnique({
       where: { id: Number(productId) },
       include: {
         prices: {
           select: {
             date: true,
-            price: true,
-            place: {
+            value: true,
+            store: {
               select: {
                 name: true,
               },
             },
+            packaging: {
+              select: {
+                quantity: true,
+                unit: {
+                  select: {
+                    symbol: true,
+                  }
+                }
+              },
+            },
+            brand: {
+              select: {
+                name: true,
+              }
+            }
           },
         },
       },
@@ -86,15 +88,21 @@ router.get('/product/:productId', async (req, res, next) => {
       return;
     }
 
-    let formatted = {
+    const transformed = {
       ...product,
       prices: product.prices.map((price) => ({
         ...price,
         date: format(price.date, 'YYYY-MM-DD'),
+        store: price?.store?.name,
+        brand: price?.brand?.name,
+        packaging: {
+          ...price?.packaging,
+          unit: price?.packaging?.unit?.symbol
+        }
       })),
     };
 
-    res.status(200).json(new ApiResponse(formatted));
+    res.status(200).json(new ApiResponse({ data: transformed }));
   } catch (error) {
     next(error);
   }

@@ -1,0 +1,9 @@
+<div class="w-full flex flex-col items-center gap-7">
+  <form [formGroup]="unitForm" (ngSubmit)="onSubmit()" class="form">
+    <input type="text" formControlName="title" placeholder="Nombre" class="bg-slate-100">
+    <input type="text" formControlName="symbol" placeholder="Simbolo" class="bg-slate-100">
+    <div>
+    <common-btn type="submit" text="Agregar" [isDisabled]="!unitForm.valid" />
+  </div>
+  </form>
+</div>

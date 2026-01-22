@@ -1,0 +1,9 @@
+<div class="w-full flex flex-col items-center gap-7">
+  <img src="images/img-register.jpg" alt="register dog" class="rounded-full w-28 h-28">
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="form">
+    <input type="text" formControlName="title" placeholder="Nombre" class="bg-slate-100">
+    <input type="text" formControlName="brand" placeholder="Marca" class="bg-slate-100">
+    <textarea formControlName="description" placeholder="Descripción" class="bg-slate-100"></textarea>
+    <common-btn type="submit" text="Agregar" />
+  </form>
+</div>

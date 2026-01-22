@@ -1,37 +1,41 @@
-<section>
-  @defer (when isLoaded()) {
-    <div class="flex gap-2 items-center">
-      <button type="button" routerLink="/" class="mb-4">
-        <i class="lni lni-chevron-left text-slate-400 font-bold"></i>
-      </button>
-      <h1 class="cursor-pointer">{{ product$().title }}</h1>
-    </div>
+<section class="w-full h-full flex flex-col bg-blue-p-100">
+  <div class="flex flex-col items-start px-4 pt-6 pb-4 text-blue-p-800 h-fit">
+    <h1 class="cursor-pointer m-0">{{ product$().title }}</h1>
     @if (product$().description) {
-      <p class="text-slate-500 mb-4">{{ product$().description }}</p>
+    <p>{{ product$().description }}</p>
     }
-    <h3>Precios</h3>
-    <hr class="bg-slate-500 mb-4"/>
-    <div class="flex flex-col gap-4">
-      @for (item of product$().prices; track $index) {
-      <div class="rounded-lg p-4 gap-2 flex flex-col" [ngClass]="getColor($index)">
-        <div class="flex items-center gap-2">
-          <i class="lni lni-dollar"></i>
-          <span class="leading-3">{{ item.price | number:'1.2-2' }}</span>
+  </div>
+  <div class="px-4 w-full bg-white rounded-t-3xl pt-6 h-full flex-grow overflow-y-scroll">
+    <h3 class="text-blue-p-800 text-lg font-bold mb-6">Precios</h3>
+    <div class="flex flex-col gap-4 h-full">
+      @for (price of product$().prices; track $index) {
+      <div class="bg-white rounded-lg shadow-md p-4 border border-blue-p-100">
+        <div class="flex justify-between items-center">
+          <span class="text-gray-500 text-xs capitalize">{{ price.date | date:'dd MMM yyyy' }}</span>
+          <span class="text-lg font-semibold text-gray-700">{{ price.store }}</span>
         </div>
-        <div class="flex items-center gap-2">
-          <i class="lni lni-calendar"></i>
-          <span class="leading-3 font-thin text-sm">{{ item.date | date:'dd MMM yyyy' | uppercase }}</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <i class="lni lni-map-marker"></i>
-          <span class="leading-3 font-thin text-sm">{{item?.place?.name}}</span>
+
+        <span class="text-xl font-semibold text-gray-800">{{ price.brand }}</span>
+
+        <div class="flex justify-between items-end">
+          <div class="flex flex-col">
+            <span class="text-gray-600 mt-2">{{ price.packaging.quantity }} {{ price.packaging.unit }}</span>
+            <span class="text-2xl font-bold text-gray-900">$ {{ price.value | number:'1.2-2' }}</span>
+          </div>
+          <div class="flex gap-2 items-center">
+            <span class="text-gray-500 text-sm">PU:</span>
+            <span class="text-xl font-semibold text-gray-900">
+              ${{ price.packaging.quantity ? (price.value / price.packaging.quantity  | number:'1.2-2') : '-' }}{{ '/' + price.packaging.unit }}
+            </span>
+          </div>
         </div>
       </div>
+
       } @empty {
-        <p>Registra un precio</p>
+        <button type="button" class="flex justify-center items-center gap-2 bg-blue-p-500 rounded-lg text-white font-bold py-4" (click)="redirectTo()"><i class="lni lni-circle-plus"></i>Agregar</button>
       }
     </div>
-  } @loading {
-    <p>Esta cargando</p>
-  }
+
+    <div class="w-full h-24"></div>
+  </div>
 </section>

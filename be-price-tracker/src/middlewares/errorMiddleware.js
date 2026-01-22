@@ -1,6 +1,7 @@
 const ApiError = require('../errors/ApiError.js');
 
 function errorMiddleware(err, req, res, next) {
+  
   if (err instanceof ApiError) {
     return res.status(err.statusCode).json({
       code: err.statusCode,
@@ -8,7 +9,7 @@ function errorMiddleware(err, req, res, next) {
       message: err.message,
     });
   }
-
+  
   console.error(err);
 
   return res.status(500).json({

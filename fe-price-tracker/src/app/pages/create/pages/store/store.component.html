@@ -1,0 +1,8 @@
+<div class="w-full flex flex-col items-center gap-7">
+  <form [formGroup]="storeForm" (ngSubmit)="onSubmit()" class="form">
+    <input type="text" formControlName="name" placeholder="Nombre" class="bg-slate-100" required="true" onclick="errorMessage = ''">
+    <div>
+    <common-btn type="submit" text="Agregar" [isDisabled]="!storeForm.valid" />
+  </div>
+  </form>
+</div>

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CommonBtnComponent } from '../../../../shared/components/common-btn/common-btn.component';
-import { PassEyeComponent } from '../../../../shared/components/pass-eye/pass-eye.component';
+import { CommonBtnComponent } from '@shared/components/common-btn/common-btn.component';
+import { PassEyeComponent } from '@shared/components/pass-eye/pass-eye.component';
 
 @Component({
   selector: 'app-register',

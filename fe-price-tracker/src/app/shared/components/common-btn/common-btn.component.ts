@@ -9,4 +9,5 @@ import { Component, Input } from '@angular/core';
 export class CommonBtnComponent {
   @Input({ required: true }) type!: string;
   @Input({ required: true }) text!: string;
+  @Input() isDisabled: boolean = false;
 }

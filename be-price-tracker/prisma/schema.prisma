@@ -14,29 +14,157 @@ datasource db {
 }
 
 model Product {
-  id          Int     @id @default(autoincrement())
+  id          Int    @id @default(autoincrement())
   title       String
-  brand       String
-  description String
-  prices      Price[]
+  description String @default("")
+
+  brands    BrandProduct[]
+  packaging Packaging[]
+  prices    Price[]
 }
 
-model Place {
-  id      Int     @id @default(autoincrement())
-  name    String
-  address String?
-  city    String?
-  Price   Price[]
+model Brand {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  products BrandProduct[]
+  prices   Price[]
+}
+
+model BrandProduct {
+  id Int @id @default(autoincrement())
+
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
+
+  brandId Int
+  brand   Brand @relation(fields: [brandId], references: [id])
+
+  @@unique([productId, brandId])
+}
+
+model Unit {
+  id     Int    @id @default(autoincrement())
+  title  String @unique
+  symbol String
+
+  packaging Packaging[]
+}
+
+model Packaging {
+  id Int @id @default(autoincrement())
+
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
+
+  unitId Int
+  unit   Unit @relation(fields: [unitId], references: [id])
+
+  prices Price[]
+
+  quantity    Float
+  description String?
+
+  @@unique([productId, unitId, quantity])
+}
+
+model Store {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  prices Price[]
 }
 
 model Price {
-  id    Int      @id @default(autoincrement())
-  date  DateTime @db.Date
-  price Float
-
-  id_product Int
-  id_place   Int
-
-  product Product @relation(fields: [id_product], references: [id])
-  place   Place   @relation(fields: [id_place], references: [id])
+  id        Int       @id @default(autoincrement())
+  value     Float
+  date      DateTime  @db.Date
+  storeId   Int
+  store     Store     @relation(fields: [storeId], references: [id])
+  productId Int
+  product   Product   @relation(fields: [productId], references: [id])
+  packId    Int
+  packaging Packaging @relation(fields: [packId], references: [id])
+  brandId   Int
+  brand     Brand     @relation(fields: [brandId], references: [id])
 }
+
+// model Product {
+//   id          Int    @id @default(autoincrement())
+//   title       String
+//   description String
+
+//   prices Price[]
+//   brands ProductBrand[]
+//   units  ProductUnit[]
+// }
+
+// model Brand {
+//   id    Int    @id @default(autoincrement())
+//   title String
+
+//   products ProductBrand[]
+// }
+
+// model Place {
+//   id      Int     @id @default(autoincrement())
+//   name    String
+//   address String?
+//   city    String?
+
+//   price Price[]
+// }
+
+// model Price {
+//   id    Int      @id @default(autoincrement())
+//   date  DateTime @db.Date
+//   value Float
+
+//   productId Int
+//   product   Product @relation(fields: [productId], references: [id])
+
+//   placeId Int
+//   place   Place @relation(fields: [placeId], references: [id])
+
+//   packageId Int
+//   package Package @relation(fields: [packageId], references: [id])
+// }
+
+// model Unit {
+//   id    Int    @id @default(autoincrement())
+//   title String
+
+//   products ProductUnit[]
+// }
+
+// model ProductBrand {
+//   productId Int
+//   product   Product @relation(fields: [productId], references: [id])
+
+//   brandId Int
+//   brand   Brand @relation(fields: [brandId], references: [id])
+
+//   @@id([productId, brandId])
+// }
+
+// model ProductUnit {
+//   productId Int
+//   product   Product @relation(fields: [productId], references: [id])
+
+//   unitId Int
+//   unit   Unit @relation(fields: [unitId], references: [id])
+
+//   @@id([productId, unitId])
+// }
+
+// model Package {
+//   id Int @id @default(autoincrement())
+
+//   priceId Int
+//   price Price @relation(fields: [priceId], references: [id])
+
+//   unitId Int
+//   unit Unit @relation(fields: [unitId], references: [id])
+
+//   product
+// }

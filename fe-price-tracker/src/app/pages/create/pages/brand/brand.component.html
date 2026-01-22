@@ -1,0 +1,11 @@
+<div class="w-full flex flex-col items-center gap-7">
+  <form [formGroup]="brandForm" (ngSubmit)="onSubmit()" class="form">
+    <input type="text" formControlName="name" placeholder="Nombre" class="bg-slate-100" required="true" onclick="errorMessage = ''">
+    <div>
+    <common-btn type="submit" [text]="status === 0 ? 'Agregar' : status === 1 ? 'Enviando...' : 'Redireccionando...'" [isDisabled]="!brandForm.valid" />
+    @if (errorMessage) {
+      <p class="text-red-500 w-full text-center">{{ errorMessage }}</p>
+    }
+  </div>
+  </form>
+</div>

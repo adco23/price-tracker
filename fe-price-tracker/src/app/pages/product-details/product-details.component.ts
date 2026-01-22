@@ -5,60 +5,28 @@ import localeEs from '@angular/common/locales/es';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ProductsService } from 'src/app/shared/services/products.service';
 import { ApiResponse } from 'src/app/core/models/apiResponse.model';
+import { LoadingComponent } from '@shared/components/loading/loading.component';
 
 registerLocaleData(localeEs, 'es');
 
 @Component({
   selector: 'app-product-details',
   standalone: true,
-  imports: [CommonModule, RouterLink, AsyncPipe],
+  imports: [CommonModule, RouterLink, AsyncPipe, LoadingComponent],
   providers: [{ provide: LOCALE_ID, useValue: 'es' }],
   templateUrl: './product-details.component.html'
 })
 export default class ProductDetailsComponent implements OnInit {
-  // priceList: ProductPrice[] = [
-  //   {
-  //     place: 'Chango Mas',
-  //     price: 551400,
-  //     date: '2024-02-22'
-  //   },
-  //   {
-  //     place: 'Chango Mas',
-  //     price: 551400,
-  //     date: '2024-02-22'
-  //   },
-  //   {
-  //     place: 'Chango Mas',
-  //     price: 551400,
-  //     date: '2024-02-22'
-  //   },
-  //   {
-  //     place: 'Chango Mas',
-  //     price: 551400,
-  //     date: '2024-02-22'
-  //   },
-  //   {
-  //     place: 'Chango Mas',
-  //     price: 551400,
-  //     date: '2024-02-22'
-  //   },
-  //   {
-  //     place: 'Chango Mas',
-  //     price: 551400,
-  //     date: '2024-02-22'
-  //   },
-  // ];
 
   product$ = signal<Product>({
     id: 0,
     title: '',
-
   });
-  isLoaded = signal(true);
+  isLoaded = signal(false);
 
   private productService = inject(ProductsService);
 
-  constructor (private route: ActivatedRoute) {};
+  constructor (private route: ActivatedRoute, private router: Router) {};
 
   ngOnInit() {
     this.route.paramMap.subscribe(paramMap => {
@@ -78,7 +46,16 @@ export default class ProductDetailsComponent implements OnInit {
     this.productService.getProduct(id).subscribe({
       next: (res: ApiResponse) => this.product$.set(res.data),
       error: (err) => console.error(err),
-      complete: () => this.isLoaded.set(false)
+      complete: () => setTimeout(() => this.isLoaded.set(true), 3000)
+      // complete: () => this.isLoaded.set(true)
     })
+  }
+
+  getUnitPrice(price: number, quantity: number): number {
+    return price / quantity;
+  }
+
+  redirectTo() {
+    this.router.navigate(['/create/price']);
   }
 }
